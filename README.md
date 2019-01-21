@@ -14,3 +14,5 @@ Operating 。
 登录：要求输入用户名和密码，仅允许尝试三次，错误输出错误提示”Unauthorized User！“。
 
 成功登录后，计算5的阶乘，在屏幕上输出结果。
+
+上传的是一个Visual Studio项目，Windows SDK版本：10.0.17763.0。
