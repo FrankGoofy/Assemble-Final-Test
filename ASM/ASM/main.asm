@@ -7,47 +7,47 @@ include .\header.inc
 
 .data
 endl			EQU<0Dh,0Ah>
-buffer			BYTE	BufSize	DUP(?),0,0		;ÊäÈëÔİ´æÇø
-stdInHandle		HANDLE	?			;ÊäÈë¾ä±ú
-stdOutHandle	HANDLE	?			;Êä³ö¾ä±ú
-bytesRead		DWORD	?			;¶ÁÈ¡×Ö½ÚÊı
-bytesWrite		DWORD	?			;Ğ´Èë×Ö½ÚÊı
-userName		BYTE	BufSize DUP(?),0,0		;ÓÃ»§Ãû£¨±£´æ£©
-userNameLen		DWORD	?						;ÓÃ»§Ãû³¤¶È
-password		BYTE	BufSize DUP(?),0,0		;ÃÜÂë£¨±£´æ£©
-passwordLen		DWORD	?						;ÃÜÂë£¨³¤¶È£©
-menu			BYTE	"Menu",0Ah,"Register",0Ah,"Login",0Ah,"Operating",0Ah,		;Ä¿Â¼
-						"Please input the first character to select function:",endl
-title			BYTE	"Final Test"		;±êÌâ£¨ÔİÊ±Ã»ÓÃ£©
-userHint		BYTE	"Please input username(no more than 80 char)",endl		;ÓÃ»§ÃûÊäÈëÌáÊ¾
-passwordHint	BYTE	"Please input password(no more than 80 char)",endl		;ÃÜÂëÊäÈëÌáÊ¾
-errorHint		BYTE	"Unauthorized User!",endl		;´íÎóÌáÊ¾
-result			DWORD	?				;¼ÆËã½á¹ûÊı¾İ±£´æÇø
-string			BYTE	10 DUP(?),endl	;resultµÄ×Ö·ûĞÍ±íÊ¾Çø£¨10¸öÊ®½øÖÆÊı¿ÉÒÔÍêÈ«±íÊ¾DWORD£©
+buffer			BYTE	BufSize	DUP(?),0,0		;è¾“å…¥æš‚å­˜åŒº
+stdInHandle		HANDLE	?			;è¾“å…¥å¥æŸ„
+stdOutHandle		HANDLE	?			;è¾“å‡ºå¥æŸ„
+bytesRead		DWORD	?			;è¯»å–å­—èŠ‚æ•°
+bytesWrite		DWORD	?			;å†™å…¥å­—èŠ‚æ•°
+userName		BYTE	BufSize DUP(?),0,0		;ç”¨æˆ·åï¼ˆä¿å­˜ï¼‰
+userNameLen		DWORD	?				;ç”¨æˆ·åé•¿åº¦
+password		BYTE	BufSize DUP(?),0,0		;å¯†ç ï¼ˆä¿å­˜ï¼‰
+passwordLen		DWORD	?				;å¯†ç ï¼ˆé•¿åº¦ï¼‰
+menu			BYTE	"Menu",0Ah,"Register",0Ah,"Login",0Ah,"Operating",0Ah,		;ç›®å½•
+				"Please input the first character to select function:",endl
+title			BYTE	"Final Test"		;æ ‡é¢˜ï¼ˆæš‚æ—¶æ²¡ç”¨ï¼‰
+userHint		BYTE	"Please input username(no more than 80 char)",endl		;ç”¨æˆ·åè¾“å…¥æç¤º
+passwordHint		BYTE	"Please input password(no more than 80 char)",endl		;å¯†ç è¾“å…¥æç¤º
+errorHint		BYTE	"Unauthorized User!",endl		;é”™è¯¯æç¤º
+result			DWORD	?				;è®¡ç®—ç»“æœæ•°æ®ä¿å­˜åŒº
+string			BYTE	10 DUP(?),endl	;resultçš„å­—ç¬¦å‹è¡¨ç¤ºåŒºï¼ˆ10ä¸ªåè¿›åˆ¶æ•°å¯ä»¥å®Œå…¨è¡¨ç¤ºDWORDï¼‰
 
 .code
 ;---------------------------------------------------
 main PROC
-;Ö÷³ÌĞò£¬ÏÔÊ¾²Ëµ¥£¬ÊäÈëÑ¡Ïî
+;ä¸»ç¨‹åºï¼Œæ˜¾ç¤ºèœå•ï¼Œè¾“å…¥é€‰é¡¹
 ;---------------------------------------------------
 	;invoke		SetConsoleTitleA,ADDR title
 L0:	
-	invoke		GetStdHandle,STD_OUTPUT_HANDLE			;»ñÈ¡Êä³ö¾ä±ú
-	mov			stdOutHandle,eax						;±£´æÊä³ö¾ä±ú
-	invoke		WriteConsole,stdOutHandle,				;Êä³ö²Ëµ¥
-							ADDR menu,					;²Ëµ¥ÄÚÈİµØÖ·
-							SIZEOF menu,				;Êä³ö´óĞ¡
-							bytesWrite,0				;Êä³ö×Ö·û¼ÆÊı
+	invoke		GetStdHandle,STD_OUTPUT_HANDLE			;è·å–è¾“å‡ºå¥æŸ„
+	mov		stdOutHandle,eax						;ä¿å­˜è¾“å‡ºå¥æŸ„
+	invoke		WriteConsole,stdOutHandle,				;è¾“å‡ºèœå•
+					ADDR menu,				;èœå•å†…å®¹åœ°å€
+					SIZEOF menu,				;è¾“å‡ºå¤§å°
+					bytesWrite,0				;è¾“å‡ºå­—ç¬¦è®¡æ•°
 
-	invoke		GetStdHandle,STD_INPUT_HANDLE			;»ñÈ¡ÊäÈë¾ä±ú
-	mov			stdInHandle,eax							;±£´æÊäÈë¾ä±ú
-	invoke		FlushConsoleInputBuffer,stdInHandle		;Çå¿ÕÊäÈë»º³å
-	invoke		ReadConsole,stdInHandle,				;»ñÈ¡ÓÃ»§ÊäÈëÑ¡Ïî
-							ADDR buffer,				;»º³åÇø
-							3,							;¶ÁÈ¡×Ö·ûÏŞÖÆ
-							ADDR bytesRead,0			;ÊäÈë×Ö·û¼ÆÊı
+	invoke		GetStdHandle,STD_INPUT_HANDLE			;è·å–è¾“å…¥å¥æŸ„
+	mov		stdInHandle,eax					;ä¿å­˜è¾“å…¥å¥æŸ„
+	invoke		FlushConsoleInputBuffer,stdInHandle		;æ¸…ç©ºè¾“å…¥ç¼“å†²
+	invoke		ReadConsole,stdInHandle,			;è·å–ç”¨æˆ·è¾“å…¥é€‰é¡¹
+				ADDR buffer,				;ç¼“å†²åŒº
+				3,					;è¯»å–å­—ç¬¦é™åˆ¶
+				ADDR bytesRead,0			;è¾“å…¥å­—ç¬¦è®¡æ•°
 
-	mov			AL,buffer		;±È½ÏÓÃ»§ÊäÈë²¢Ìø×ªµ½ÏàÓ¦º¯Êı
+	mov			AL,buffer		;æ¯”è¾ƒç”¨æˆ·è¾“å…¥å¹¶è·³è½¬åˆ°ç›¸åº”å‡½æ•°
 	cmp			AL,'R'
 	je			L1
 	cmp			AL,'L'
@@ -70,60 +70,60 @@ main ENDP
 
 ;---------------------------------------------------
 Register PROC
-;ÓÃ»§×¢²á
-;½ÓÊÕ£º
-;·µ»Ø£º
+;ç”¨æˆ·æ³¨å†Œ
+;æ¥æ”¶ï¼š
+;è¿”å›ï¼š
 ;---------------------------------------------------
-	invoke		WriteConsole,stdOutHandle,					;Êä³öÌáÊ¾Óï
-							ADDR userHint,					;ÄÚÈİµØÖ·
-							SIZEOF userHint,				;Êä³ö´óĞ¡
-							bytesWrite,0					;Êä³ö×Ö·û¼ÆÊı
+	invoke		WriteConsole,stdOutHandle,					;è¾“å‡ºæç¤ºè¯­
+					ADDR userHint,					;å†…å®¹åœ°å€
+					SIZEOF userHint,				;è¾“å‡ºå¤§å°
+					bytesWrite,0					;è¾“å‡ºå­—ç¬¦è®¡æ•°
 
-	invoke		FlushConsoleInputBuffer,stdInHandle		;Çå¿ÕÊäÈë»º³å
-	invoke		ReadConsole,stdInHandle,				;»ñÈ¡ÓÃ»§ÊäÈëÑ¡Ïî
-							ADDR userName,				;»º³åÇø
-							BufSize,					;¶ÁÈ¡×Ö·ûÏŞÖÆ
-							ADDR userNameLen,0			;ÊäÈë×Ö·û¼ÆÊı
+	invoke		FlushConsoleInputBuffer,stdInHandle		;æ¸…ç©ºè¾“å…¥ç¼“å†²
+	invoke		ReadConsole,stdInHandle,				;è·å–ç”¨æˆ·è¾“å…¥é€‰é¡¹
+					ADDR userName,				;ç¼“å†²åŒº
+					BufSize,					;è¯»å–å­—ç¬¦é™åˆ¶
+					ADDR userNameLen,0			;è¾“å…¥å­—ç¬¦è®¡æ•°
 
-	invoke		WriteConsole,stdOutHandle,					;Êä³öÌáÊ¾Óï
-							ADDR passwordHint,				;ÄÚÈİµØÖ·
-							SIZEOF passwordHint,			;Êä³ö´óĞ¡
-							bytesWrite,0					;Êä³ö×Ö·û¼ÆÊı
+	invoke		WriteConsole,stdOutHandle,					;è¾“å‡ºæç¤ºè¯­
+					ADDR passwordHint,				;å†…å®¹åœ°å€
+					SIZEOF passwordHint,				;è¾“å‡ºå¤§å°
+					bytesWrite,0					;è¾“å‡ºå­—ç¬¦è®¡æ•°
 
-	invoke		FlushConsoleInputBuffer,stdInHandle		;Çå¿ÕÊäÈë»º³å
-	invoke		ReadConsole,stdInHandle,				;»ñÈ¡ÓÃ»§ÊäÈëÑ¡Ïî
-							ADDR password,				;»º³åÇø
-							BufSize,					;¶ÁÈ¡×Ö·ûÏŞÖÆ
-							ADDR passwordLen,0			;ÊäÈë×Ö·û¼ÆÊı
+	invoke		FlushConsoleInputBuffer,stdInHandle		;æ¸…ç©ºè¾“å…¥ç¼“å†²
+	invoke		ReadConsole,stdInHandle,				;è·å–ç”¨æˆ·è¾“å…¥é€‰é¡¹
+					ADDR password,				;ç¼“å†²åŒº
+					BufSize,				;è¯»å–å­—ç¬¦é™åˆ¶
+					ADDR passwordLen,0			;è¾“å…¥å­—ç¬¦è®¡æ•°
 	ret
 Register ENDP
 
 ;---------------------------------------------------
 Login PROC
-;ÓÃ»§µÇÂ¼
-;½ÓÊÕ£º
-;·µ»Ø£º
+;ç”¨æˆ·ç™»å½•
+;æ¥æ”¶ï¼š
+;è¿”å›ï¼š
 ;---------------------------------------------------
 	mov			ecx,3
 START:
-	invoke		WriteConsole,stdOutHandle,					;Êä³öÌáÊ¾Óï
-							ADDR userHint,					;ÄÚÈİµØÖ·
-							SIZEOF userHint,				;Êä³ö´óĞ¡
-							bytesWrite,0					;Êä³ö×Ö·û¼ÆÊı
-	invoke		FlushConsoleInputBuffer,stdInHandle		;Çå¿ÕÊäÈë»º³å
-	invoke		ReadConsole,stdInHandle,				;»ñÈ¡ÓÃ»§ÊäÈëÑ¡Ïî
-							ADDR buffer,				;»º³åÇø
-							userNameLen,				;¶ÁÈ¡×Ö·ûÏŞÖÆ
-							ADDR bytesRead,0			;ÊäÈë×Ö·û¼ÆÊı
-	mov			eax,userNameLen			;¼ì²éÓÃ»§Ãû³¤¶ÈÊÇ·ñÒ»ÖÂ
+	invoke		WriteConsole,stdOutHandle,					;è¾“å‡ºæç¤ºè¯­
+					ADDR userHint,					;å†…å®¹åœ°å€
+					SIZEOF userHint,				;è¾“å‡ºå¤§å°
+					bytesWrite,0					;è¾“å‡ºå­—ç¬¦è®¡æ•°
+	invoke		FlushConsoleInputBuffer,stdInHandle		;æ¸…ç©ºè¾“å…¥ç¼“å†²
+	invoke		ReadConsole,stdInHandle,				;è·å–ç”¨æˆ·è¾“å…¥é€‰é¡¹
+					ADDR buffer,				;ç¼“å†²åŒº
+					userNameLen,				;è¯»å–å­—ç¬¦é™åˆ¶
+					ADDR bytesRead,0			;è¾“å…¥å­—ç¬¦è®¡æ•°
+	mov			eax,userNameLen			;æ£€æŸ¥ç”¨æˆ·åé•¿åº¦æ˜¯å¦ä¸€è‡´
 	cmp			eax,bytesRead			
-	je			CHECK_INDEX_A				;³¤¶ÈÒ»ÖÂÔò¼ì²éÄÚÈİ
-	invoke		WriteConsole,stdOutHandle,					;Êä³ö´íÎóÌáÊ¾Óï
-							ADDR errorHint,					;ÄÚÈİµØÖ·
-							SIZEOF errorHint,				;Êä³ö´óĞ¡
-							bytesWrite,0					;Êä³ö×Ö·û¼ÆÊı
+	je			CHECK_INDEX_A				;é•¿åº¦ä¸€è‡´åˆ™æ£€æŸ¥å†…å®¹
+	invoke		WriteConsole,stdOutHandle,					;è¾“å‡ºé”™è¯¯æç¤ºè¯­
+					ADDR errorHint,					;å†…å®¹åœ°å€
+					SIZEOF errorHint,				;è¾“å‡ºå¤§å°
+					bytesWrite,0					;è¾“å‡ºå­—ç¬¦è®¡æ•°
 	jmp			RE1
-	CHECK_INDEX_A:						;±È½ÏÓÃ»§ÃûÄÚÈİ
+	CHECK_INDEX_A:						;æ¯”è¾ƒç”¨æˆ·åå†…å®¹
 	mov			esi,0
 	mov			edi,0
 NEXT_1:
@@ -139,26 +139,26 @@ NEXT_1:
 	jne			NEXT_1
 
 CHECK_PASSWORD:
-	invoke		WriteConsole,stdOutHandle,					;Êä³öÌáÊ¾Óï
-							ADDR passwordHint,				;ÄÚÈİµØÖ·
-							SIZEOF passwordHint,			;Êä³ö´óĞ¡
-							bytesWrite,0					;Êä³ö×Ö·û¼ÆÊı
+	invoke		WriteConsole,stdOutHandle,					;è¾“å‡ºæç¤ºè¯­
+					ADDR passwordHint,				;å†…å®¹åœ°å€
+					SIZEOF passwordHint,				;è¾“å‡ºå¤§å°
+					bytesWrite,0					;è¾“å‡ºå­—ç¬¦è®¡æ•°
 
-	invoke		FlushConsoleInputBuffer,stdInHandle		;Çå¿ÕÊäÈë»º³å
-	invoke		ReadConsole,stdInHandle,				;»ñÈ¡ÓÃ»§ÊäÈëÑ¡Ïî
-							ADDR buffer,				;»º³åÇø
-							passwordLen,				;¶ÁÈ¡×Ö·ûÏŞÖÆ
-							ADDR bytesRead,0			;ÊäÈë×Ö·û¼ÆÊı
+	invoke		FlushConsoleInputBuffer,stdInHandle		;æ¸…ç©ºè¾“å…¥ç¼“å†²
+	invoke		ReadConsole,stdInHandle,				;è·å–ç”¨æˆ·è¾“å…¥é€‰é¡¹
+					ADDR buffer,				;ç¼“å†²åŒº
+					passwordLen,				;è¯»å–å­—ç¬¦é™åˆ¶
+					ADDR bytesRead,0			;è¾“å…¥å­—ç¬¦è®¡æ•°
 
-	mov			eax,passwordLen			;¼ì²éÓÃ»§Ãû³¤¶ÈÊÇ·ñÒ»ÖÂ
+	mov			eax,passwordLen			;æ£€æŸ¥ç”¨æˆ·åé•¿åº¦æ˜¯å¦ä¸€è‡´
 	cmp			eax,bytesRead			
-	je			CHECK_INDEX_B			;³¤¶ÈÒ»ÖÂÔò¼ì²éÄÚÈİ
-	invoke		WriteConsole,stdOutHandle,					;Êä³ö´íÎóÌáÊ¾Óï
-							ADDR errorHint,					;ÄÚÈİµØÖ·
-							SIZEOF errorHint,				;Êä³ö´óĞ¡
-							bytesWrite,0					;Êä³ö×Ö·û¼ÆÊı
+	je			CHECK_INDEX_B			;é•¿åº¦ä¸€è‡´åˆ™æ£€æŸ¥å†…å®¹
+	invoke		WriteConsole,stdOutHandle,					;è¾“å‡ºé”™è¯¯æç¤ºè¯­
+					ADDR errorHint,					;å†…å®¹åœ°å€
+					SIZEOF errorHint,				;è¾“å‡ºå¤§å°
+					bytesWrite,0					;è¾“å‡ºå­—ç¬¦è®¡æ•°
 	jmp			RE1
-	CHECK_INDEX_B:						;±È½ÏÃÜÂëÄÚÈİ
+	CHECK_INDEX_B:						;æ¯”è¾ƒå¯†ç å†…å®¹
 	mov			esi,0
 	mov			edi,0
 NEXT_2:
@@ -183,21 +183,21 @@ Login ENDP
 
 ;---------------------------------------------------
 Operating PROC
-;¼ÆËã½×³Ë²¢Êä³ö
-;½ÓÊÕ£º
-;·µ»Ø£º
+;è®¡ç®—é˜¶ä¹˜å¹¶è¾“å‡º
+;æ¥æ”¶ï¼š
+;è¿”å›ï¼š
 ;---------------------------------------------------
 	mov			ecx,5
 	mov			eax,1
-Factorial:				;¼ÆËã½×³Ë
+Factorial:				;è®¡ç®—é˜¶ä¹˜
 	mul			ecx
 	loop		Factorial
 	mov			result,eax
 
-	mov			esi,9		;Êı×é¶¨Î»
-	mov			eax,result	;±»³ıÊı/ÉÌ
-	mov			edx,0		;ÓàÊı
-	mov			ebx,10		;³ıÊı
+	mov			esi,9		;æ•°ç»„å®šä½
+	mov			eax,result	;è¢«é™¤æ•°/å•†
+	mov			edx,0		;ä½™æ•°
+	mov			ebx,10		;é™¤æ•°
 A1:
 	div			ebx
 	mov			string[esi],DL
@@ -206,7 +206,7 @@ A1:
 	jae			A1
 	mov			string[esi],AL
 
-	mov			ecx,0			;´¦Àí×Ö·û´®²Ù×÷
+	mov			ecx,0			;å¤„ç†å­—ç¬¦ä¸²æ“ä½œ
 	mov			esi,sizeof string
 	sub			esi,2
 A3:
@@ -215,10 +215,10 @@ A3:
 	cmp			esi,0
 	jne			A3
 
-	invoke		WriteConsole,stdOutHandle,				;Êä³öÌáÊ¾Óï
-							ADDR string,				;ÄÚÈİµØÖ·
-							SIZEOF string,				;Êä³ö´óĞ¡
-							bytesWrite,0				;Êä³ö×Ö·û¼ÆÊı
+	invoke		WriteConsole,stdOutHandle,				;è¾“å‡ºæç¤ºè¯­
+					ADDR string,				;å†…å®¹åœ°å€
+					SIZEOF string,				;è¾“å‡ºå¤§å°
+					bytesWrite,0				;è¾“å‡ºå­—ç¬¦è®¡æ•°
 	ret
 Operating ENDP
 END	main
