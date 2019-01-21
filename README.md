@@ -15,4 +15,6 @@ Operating 。
 
 成功登录后，计算5的阶乘，在屏幕上输出结果。
 
+如果你还在用记事本和DEBUG来调试汇编，那你还是naive。
+
 上传的是一个Visual Studio项目，Windows SDK版本：10.0.17763.0。
